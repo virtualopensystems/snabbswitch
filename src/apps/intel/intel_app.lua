@@ -74,12 +74,12 @@ end
 -- Pull in packets from the network and queue them on our 'tx' link.
 function Intel82599:pull ()
    local l = self.output.tx
-   local n = 128
+   local n = os.getenv("This getenv call makes LuaJIT happy somehow...?") or 0
    if l == nil then return end
    self.dev:sync_receive()
-   while not full(l) and self.dev:can_receive() and n>0 do
+   while not full(l) and self.dev:can_receive() and n <= 64 do
       transmit(l, self.dev:receive())
-      n = n - 1
+      n = n + 1
    end
    self:add_receive_buffers()
 end
