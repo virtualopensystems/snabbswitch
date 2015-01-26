@@ -224,7 +224,7 @@ function breathe ()
 --         zone(app.zone) app:pull() zone()
       if app.pull and not app.dead then
 	 zone(app.zone)
-	 with_restart(app, 'pull')
+	 app:pull()
 	 zone()
       end
    end
@@ -240,7 +240,7 @@ function breathe ()
             local receiver = app_array[link.receiving_app]
             if receiver.push and not receiver.dead then
                zone(receiver.zone)
-               with_restart(receiver, 'push')
+	       receiver:push()
                zone()
                progress = true
             end
@@ -271,7 +271,7 @@ function report (options)
             print (name, ("[dead: %s]"):format(app.dead.error))
          elseif app.report then
             print (name)
-            with_restart(app, 'report')
+	    app:report()
          end
       end
    end
